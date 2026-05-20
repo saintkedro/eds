@@ -571,6 +571,18 @@ footer {
     margin-top: 15px;
 }
 
+footer.logo {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-main);
+    text-decoration: none;
+}
+
+.footer-logo span {
+    color: var(--accent);
+}
+
+
 .footer-links {
     list-style: none;
 }
