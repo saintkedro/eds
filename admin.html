@@ -12,7 +12,19 @@
 </head>
 <body>
 
-    <div class="dashboard-container">
+    <div class="admin-gate" id="admin-gate">
+        <form class="gate-card" id="admin-login">
+            <h1>Manager Portal</h1>
+            <p>Quote requests are saved in this browser only. Enter the manager password to view them.</p>
+            <label for="admin-password">Password</label>
+            <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+            <p class="gate-error" id="gate-error" hidden>Incorrect password.</p>
+            <button class="gate-submit" type="submit">Unlock dashboard</button>
+            <a class="gate-back" href="index.html">Back to site</a>
+        </form>
+    </div>
+
+    <div class="dashboard-container" id="dashboard" hidden>
         <aside class="sidebar">
             <div class="sidebar-brand">
                 Everyday<span>Admin</span>
@@ -24,10 +36,11 @@
         </aside>
 
         <main class="main-content">
+            <a class="mobile-back" href="index.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to Site</a>
             <header class="admin-header">
                 <div class="welcome-text">
                     <h1>Service Tracker Dashboard</h1>
-                    <p>Real-time analytics and tracking for all incoming requests.</p>
+                    <p>Leads saved in this browser. They are not stored on a server.</p>
                 </div>
                 <div class="admin-profile">
                     <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
@@ -46,7 +59,7 @@
                 <div class="metric-card functional">
                     <div class="metric-info">
                         <h3>Active Pipelines</h3>
-                        <p id="active-pipelines">0 / 5</p>
+                        <p id="active-pipelines">0 / 6</p>
                     </div>
                     <div class="metric-icon"><i class="fa-solid fa-diagram-project"></i></div>
                 </div>
@@ -108,12 +121,23 @@
                         <div class="progress-fill" id="bar-automation" style="width: 0%"></div>
                     </div>
                 </div>
+
+                <div class="track-card">
+                    <div class="track-header">
+                        <span class="track-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                        <span class="track-count" id="count-training">0</span>
+                    </div>
+                    <h4>ICT Training</h4>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill" id="bar-training" style="width: 0%"></div>
+                    </div>
+                </div>
             </section>
 
             <section class="table-container">
                 <div class="table-header">
                     <h2>Incoming Customer Responses</h2>
-                    <button class="btn-clear" id="clear-all-btn"><i class="fa-solid fa-trash-can"></i> Clear Database</button>
+                    <button class="btn-clear" id="clear-all-btn" type="button"><i class="fa-solid fa-trash-can" aria-hidden="true"></i> Clear saved leads</button>
                 </div>
                 <div class="responsive-table">
                     <table id="responses-table">
@@ -133,7 +157,7 @@
                 </div>
                 <div class="empty-state" id="empty-state-msg">
                     <i class="fa-solid fa-chart-bar"></i>
-                    <p>No consumer response data currently tracked in localStorage.</p>
+                    <p>No quote requests saved in this browser yet.</p>
                 </div>
             </section>
         </main>

@@ -1,48 +1,121 @@
-// Mobile navigation drawer toggle interaction layer
 const mobileMenu = document.getElementById('mobile-menu');
 const navLinks = document.querySelector('.nav-links');
+const navItems = document.querySelectorAll('.nav-links a');
+
+function setMenuOpen(open) {
+    navLinks.classList.toggle('active', open);
+    mobileMenu.classList.toggle('is-active', open);
+    mobileMenu.setAttribute('aria-expanded', String(open));
+    mobileMenu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+}
 
 mobileMenu.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    mobileMenu.classList.toggle('is-active');
+    setMenuOpen(!navLinks.classList.contains('active'));
 });
 
-// Accordion mechanics logic setup behavior for FAQ
+navItems.forEach((link) => {
+    link.addEventListener('click', () => setMenuOpen(false));
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        setMenuOpen(false);
+    }
+});
+
 const faqItems = document.querySelectorAll('.faq-item');
 
-faqItems.forEach(item => {
+function setFaqOpen(item, open) {
+    item.classList.toggle('active', open);
+    const question = item.querySelector('.faq-question');
+    if (question) {
+        question.setAttribute('aria-expanded', String(open));
+    }
+}
+
+faqItems.forEach((item) => {
     const question = item.querySelector('.faq-question');
     question.addEventListener('click', () => {
         const isActive = item.classList.contains('active');
-        
-        // Close other interactive structural boxes active profiles
-        faqItems.forEach(i => i.classList.remove('active'));
-        
+        faqItems.forEach((other) => setFaqOpen(other, false));
         if (!isActive) {
-            item.classList.add('active');
+            setFaqOpen(item, true);
         }
     });
 });
 
-// Dynamic Scroll spying behavior highlights to update active menus
 const sections = document.querySelectorAll('section');
-const navItems = document.querySelectorAll('.nav-links a');
+const navTargets = new Set(
+    [...navItems]
+        .map((item) => item.getAttribute('href'))
+        .filter((href) => href && href.startsWith('#'))
+);
 
 window.addEventListener('scroll', () => {
     let currentSection = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= (sectionTop - 150)) {
-            currentSection = section.getAttribute('id');
+
+    sections.forEach((section) => {
+        const id = section.getAttribute('id');
+        if (!id || !navTargets.has(`#${id}`)) {
+            return;
+        }
+        if (window.scrollY >= section.offsetTop - 150) {
+            currentSection = id;
         }
     });
 
-    navItems.forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('href') === `#${currentSection}`) {
-            item.classList.add('active');
-        }
+    navItems.forEach((item) => {
+        item.classList.toggle('active', item.getAttribute('href') === `#${currentSection}`);
     });
+}, { passive: true });
+
+const quoteForm = document.getElementById('quote-form');
+const formStatus = document.getElementById('form-status');
+
+function readResponses() {
+    try {
+        const parsed = JSON.parse(localStorage.getItem('formResponses') || '[]');
+        return Array.isArray(parsed) ? parsed.filter((item) => item && typeof item === 'object') : [];
+    } catch {
+        return [];
+    }
+}
+
+function createId() {
+    if (window.crypto && typeof crypto.randomUUID === 'function') {
+        return crypto.randomUUID();
+    }
+    return `lead-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function setFormStatus(message, type) {
+    formStatus.hidden = false;
+    formStatus.textContent = message;
+    formStatus.className = `form-status ${type}`;
+}
+
+quoteForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = new FormData(quoteForm);
+    const entry = {
+        id: createId(),
+        name: String(data.get('name') || '').trim(),
+        email: String(data.get('email') || '').trim(),
+        phone: String(data.get('phone') || '').trim(),
+        service: String(data.get('service') || '').trim(),
+        message: String(data.get('message') || '').trim(),
+        createdAt: new Date().toISOString()
+    };
+
+    try {
+        const responses = readResponses();
+        responses.push(entry);
+        localStorage.setItem('formResponses', JSON.stringify(responses));
+    } catch {
+        setFormStatus('This browser blocked local storage, so the request could not be saved. Email hello@everydaydigital.com instead.', 'error');
+        return;
+    }
+
+    quoteForm.reset();
+    setFormStatus('Your quote request is saved on this device. A manager can review it from this browser’s dashboard.', 'success');
 });
