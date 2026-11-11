@@ -139,10 +139,11 @@ const SECTIONS = [
         type: 'list',
         itemLabel: 'Testimonial',
         titleField: 'author',
-        blank: { quote: '', author: '' },
+        blank: { quote: '', author: '', projectId: '' },
         fields: [
             { path: 'quote', label: 'Quote', type: 'textarea' },
-            { path: 'author', label: 'Author' }
+            { path: 'author', label: 'Author' },
+            { path: 'projectId', label: 'Related project', type: 'project', hint: 'Optional. Links this review to a case study.' }
         ]
     },
     {
@@ -436,6 +437,11 @@ function renderField(section, field, source, index) {
     let control;
     if (field.type === 'service') {
         const options = draft.services.filter((item) => item.id).map((item) => `
+            <option value="${escapeHtml(item.id)}"${item.id === value ? ' selected' : ''}>${escapeHtml(item.title || item.id)}</option>
+        `).join('');
+        control = `<select id="${idBase}" ${data}${describedBy}><option value="">None</option>${options}</select>`;
+    } else if (field.type === 'project') {
+        const options = (draft.projects || []).filter((item) => item.id).map((item) => `
             <option value="${escapeHtml(item.id)}"${item.id === value ? ' selected' : ''}>${escapeHtml(item.title || item.id)}</option>
         `).join('');
         control = `<select id="${idBase}" ${data}${describedBy}><option value="">None</option>${options}</select>`;

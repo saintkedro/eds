@@ -172,9 +172,21 @@ window.SITE_DEFAULTS = {
     ],
 
     testimonials: [
-        { quote: 'They rebuilt our online presence with a clear website and digital plan. We started getting more serious enquiries within weeks.', author: 'Operations lead, Lagos professional services firm' },
-        { quote: 'Responsive, practical, and easy to work with. They explained options in plain language and delivered what they promised.', author: 'Founder, retail SME' },
-        { quote: 'We needed a partner who could handle branding and day-to-day digital work for a lean team. The results were consistent and on brief.', author: 'Programme director, community NGO' }
+        {
+            quote: 'Patient bookings and reports used to live in different places. The healthcare platform brought registration, scheduling and diagnostics together, and our front desk finally works from one system.',
+            author: 'Operations manager, diagnostic centre',
+            projectId: 'healthcare-management-system'
+        },
+        {
+            quote: 'Admissions season used to overwhelm our team. Online applications, tracking and the campus portal cut the manual back-and-forth and made the process clearer for applicants.',
+            author: 'Admissions lead, higher education institution',
+            projectId: 'digital-education-management-platform'
+        },
+        {
+            quote: 'Guests can now see rooms and request bookings without calling all day. The hotel site looks professional and has become our strongest direct channel.',
+            author: 'General manager, boutique hotel',
+            projectId: 'hotel-booking-website'
+        }
     ],
 
     faqs: [

@@ -252,6 +252,22 @@
         `;
     }
 
+    function projectTitle(id) {
+        const project = projects.find((item) => item.id === id);
+        return project ? project.title : '';
+    }
+
+    function testimonialCard(item) {
+        const related = item.projectId ? projectTitle(item.projectId) : '';
+        return `
+            <figure class="test-card">
+                <blockquote><p>“${esc(item.quote)}”</p></blockquote>
+                <figcaption>— ${esc(item.author)}</figcaption>
+                ${related ? `<p class="test-related"><a class="text-link" href="${projectUrl(item.projectId)}">${esc(related)} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></p>` : ''}
+            </figure>
+        `;
+    }
+
     function testimonialsSection() {
         const items = list(content.testimonials);
         if (!items.length) {
@@ -262,16 +278,15 @@
                 <div class="container">
                     ${sectionHeading('What Our Clients Say')}
                     <div class="testimonials-grid">
-                        ${items.map((item) => `
-                            <figure class="test-card">
-                                <blockquote><p>“${esc(item.quote)}”</p></blockquote>
-                                <figcaption>— ${esc(item.author)}</figcaption>
-                            </figure>
-                        `).join('')}
+                        ${items.map(testimonialCard).join('')}
                     </div>
                 </div>
             </section>
         `;
+    }
+
+    function projectTestimonials(projectId) {
+        return list(content.testimonials).filter((item) => item.projectId === projectId);
     }
 
     function faqList(items) {
@@ -536,6 +551,7 @@
         }
         setMeta(item.title, item.summary);
         const service = findService(item.serviceId);
+        const reviews = projectTestimonials(item.id);
 
         return `
             ${pageHero({ eyebrow: 'Case study', title: item.title, intro: item.summary }, pills(item.serviceId))}
@@ -544,6 +560,14 @@
                     <div class="detail-main">
                         ${detailBlocks([['The challenge', item.challenge], ['Our approach', item.approach], ['The outcome', item.outcome]])}
                         ${list(item.tags).length ? `<div class="tag-row">${list(item.tags).map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}</div>` : ''}
+                        ${reviews.length ? `
+                            <div class="project-reviews">
+                                <h2>Client feedback</h2>
+                                <div class="testimonials-grid">
+                                    ${reviews.map(testimonialCard).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
                     </div>
                     <aside class="detail-aside">
                         <div class="aside-card">
