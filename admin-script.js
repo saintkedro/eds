@@ -1,18 +1,18 @@
-const ADMIN_PASSWORD = 'eds-manager-2026';
 const AUTH_KEY = 'edsAdminUnlocked';
+/* SHA-256 of "eds:" + password. Change password by updating this hash — never store the plaintext in the repo. */
+const ADMIN_PASSWORD_HASH = 'f6f18a08d16dfd14eb85e6fb00a7d6a364570c6bed606869ccd6751ea1229f24';
+const ADMIN_PASSWORD_SALT = 'eds:';
 
 const { getContent, saveContent, resetContent, readLeads, writeLeads, escapeHtml, iconClass, slugify } = window.EDSStore;
-
-const KNOWN_TAGS = ['webdev', 'testing', 'branding', 'marketing', 'automation', 'training'];
 
 const VIEWS = {
     leads: {
         title: 'Service Tracker Dashboard',
-        intro: 'Leads saved in this browser. They are not stored on a server.'
+        intro: 'Quote requests saved on this device only. Public visitors send requests through WhatsApp — they are not stored on a server.'
     },
     content: {
         title: 'Site Content',
-        intro: 'Edit the text on every public page. Saved changes apply in this browser only.'
+        intro: 'Draft edits apply in this browser only. To publish for everyone, update content.js in the project and deploy.'
     }
 };
 
@@ -35,7 +35,8 @@ const SECTIONS = [
             { path: 'name', label: 'Company name' },
             { path: 'logoPrimary', label: 'Header name (first line)' },
             { path: 'logoAccent', label: 'Header name (second line)' },
-            { path: 'phone', label: 'Phone' },
+            { path: 'phone', label: 'Call number' },
+            { path: 'whatsappNumber', label: 'WhatsApp number (display)' },
             { path: 'email', label: 'Email', input: 'email' },
             { path: 'location', label: 'Location' },
             { path: 'registration', label: 'Registration number' },
@@ -44,7 +45,7 @@ const SECTIONS = [
             { path: 'socials.facebook', label: 'Facebook URL', input: 'url', hint: 'Leave empty to hide the icon.' },
             { path: 'socials.instagram', label: 'Instagram URL', input: 'url' },
             { path: 'socials.linkedin', label: 'LinkedIn URL', input: 'url' },
-            { path: 'socials.whatsapp', label: 'WhatsApp URL', input: 'url', hint: 'For example https://wa.me/2349167639583' }
+            { path: 'socials.whatsapp', label: 'WhatsApp URL', input: 'url', hint: 'Used for the footer icon and the floating chat button. For example https://wa.me/2347012353801' }
         ]
     },
     {
@@ -163,11 +164,10 @@ const SECTIONS = [
         itemLabel: 'Project',
         titleField: 'title',
         hasId: true,
-        blank: { id: '', title: '', serviceId: '', sample: false, summary: '', challenge: '', approach: '', outcome: '', tags: [] },
+        blank: { id: '', title: '', serviceId: '', summary: '', challenge: '', approach: '', outcome: '', tags: [] },
         fields: [
             { path: 'title', label: 'Title' },
             { path: 'serviceId', label: 'Service', type: 'service' },
-            { path: 'sample', label: 'Label as sample project', type: 'checkbox', hint: 'Uncheck once this is a real client case study.' },
             { path: 'summary', label: 'Summary', type: 'textarea' },
             { path: 'challenge', label: 'The challenge', type: 'textarea' },
             { path: 'approach', label: 'Our approach', type: 'textarea' },
@@ -182,11 +182,10 @@ const SECTIONS = [
         itemLabel: 'Article',
         titleField: 'title',
         hasId: true,
-        blank: { id: '', title: '', serviceId: '', sample: false, date: '', readTime: '', summary: '', body: [] },
+        blank: { id: '', title: '', serviceId: '', date: '', readTime: '', summary: '', body: [] },
         fields: [
             { path: 'title', label: 'Title' },
             { path: 'serviceId', label: 'Related service', type: 'service' },
-            { path: 'sample', label: 'Label as sample article', type: 'checkbox' },
             { path: 'date', label: 'Date', input: 'date' },
             { path: 'readTime', label: 'Read time', hint: 'For example “4 min read”.' },
             { path: 'summary', label: 'Summary', type: 'textarea' },
@@ -213,21 +212,45 @@ document.addEventListener('DOMContentLoaded', () => {
         showView(window.location.hash === '#content' ? 'content' : 'leads');
     }
 
+    async function hashPassword(password) {
+        const data = new TextEncoder().encode(ADMIN_PASSWORD_SALT + String(password ?? ''));
+        const digest = await crypto.subtle.digest('SHA-256', data);
+        return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function passwordsMatch(password) {
+        const hash = await hashPassword(password);
+        if (hash.length !== ADMIN_PASSWORD_HASH.length) {
+            return false;
+        }
+        let mismatch = 0;
+        for (let i = 0; i < hash.length; i += 1) {
+            mismatch |= hash.charCodeAt(i) ^ ADMIN_PASSWORD_HASH.charCodeAt(i);
+        }
+        return mismatch === 0;
+    }
+
     if (sessionStorage.getItem(AUTH_KEY) === '1') {
         showDashboard();
     }
 
-    loginForm.addEventListener('submit', (event) => {
+    loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const password = new FormData(loginForm).get('password');
-        if (password !== ADMIN_PASSWORD) {
-            gateError.hidden = false;
-            return;
+        const submit = loginForm.querySelector('[type="submit"]');
+        submit.disabled = true;
+        try {
+            if (!(await passwordsMatch(password))) {
+                gateError.hidden = false;
+                return;
+            }
+            gateError.hidden = true;
+            sessionStorage.setItem(AUTH_KEY, '1');
+            loginForm.reset();
+            showDashboard();
+        } finally {
+            submit.disabled = false;
         }
-        gateError.hidden = true;
-        sessionStorage.setItem(AUTH_KEY, '1');
-        loginForm.reset();
-        showDashboard();
     });
 
     document.querySelectorAll('.view-tab').forEach((tab) => {
@@ -338,7 +361,8 @@ function renderLeads() {
     emptyState.style.display = leads.length ? 'none' : 'block';
 
     tbody.innerHTML = leads.map((lead) => {
-        const tagClass = KNOWN_TAGS.includes(lead.service) ? `service-tag tag-${lead.service}` : 'service-tag';
+        const safeId = String(lead.service || '').replace(/[^a-z0-9-]/gi, '');
+        const tagClass = safeId ? `service-tag tag-${safeId}` : 'service-tag';
         return `
             <tr>
                 <td><strong>${escapeHtml(lead.name)}</strong></td>
@@ -587,7 +611,7 @@ function saveDraft() {
     }
 
     draft = getContent();
-    setDirty(false, 'Saved. Public pages show the changes the next time they load in this browser.');
+    setDirty(false, 'Saved in this browser. Deploy an updated content.js to publish the same changes for every visitor.');
     renderEditor();
     renderLeads();
 }

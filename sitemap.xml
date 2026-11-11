@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://everydaydigital.ng/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://everydaydigital.ng/about.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://everydaydigital.ng/services.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://everydaydigital.ng/process.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://everydaydigital.ng/work.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://everydaydigital.ng/insights.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://everydaydigital.ng/faq.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://everydaydigital.ng/contact.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://everydaydigital.ng/service.html?id=webdev</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://everydaydigital.ng/service.html?id=testing</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://everydaydigital.ng/service.html?id=branding</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://everydaydigital.ng/service.html?id=marketing</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://everydaydigital.ng/service.html?id=automation</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://everydaydigital.ng/service.html?id=training</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://everydaydigital.ng/project.html?id=retail-storefront</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://everydaydigital.ng/project.html?id=payments-app-qa</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://everydaydigital.ng/project.html?id=ngo-brand-identity</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://everydaydigital.ng/project.html?id=restaurant-social-relaunch</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://everydaydigital.ng/project.html?id=clinic-booking-system</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://everydaydigital.ng/project.html?id=teacher-digital-skills</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://everydaydigital.ng/insight.html?id=before-you-build-a-website</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://everydaydigital.ng/insight.html?id=tests-before-launch</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://everydaydigital.ng/insight.html?id=what-to-automate-first</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+</urlset>

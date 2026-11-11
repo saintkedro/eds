@@ -46,11 +46,30 @@
     }
 
     function setMeta(title, description) {
-        document.title = title ? `${title} | ${brand.name}` : `${brand.name} | Smart Digital Solutions`;
+        const fullTitle = title ? `${title} | ${brand.name}` : `${brand.name} | Smart Digital Solutions`;
+        const desc = description || brand.description || '';
+        document.title = fullTitle;
         const meta = document.querySelector('meta[name="description"]');
         if (meta) {
-            meta.setAttribute('content', description || brand.description || '');
+            meta.setAttribute('content', desc);
         }
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) {
+            ogTitle.setAttribute('content', fullTitle);
+        }
+        const ogDescription = document.querySelector('meta[property="og:description"]');
+        if (ogDescription) {
+            ogDescription.setAttribute('content', desc);
+        }
+    }
+
+    function whatsappChatUrl(message) {
+        const base = safeUrl(brand.socials && brand.socials.whatsapp);
+        if (!base) {
+            return '';
+        }
+        const separator = base.includes('?') ? '&' : '?';
+        return message ? `${base}${separator}text=${encodeURIComponent(message)}` : base;
     }
 
     function renderHeader() {
@@ -123,9 +142,10 @@
                 <div>
                     <h4>Contact</h4>
                     <ul class="footer-links">
-                        <li><a href="${esc(telHref(brand.phone))}">${esc(brand.phone)}</a></li>
-                        <li><a href="mailto:${esc(brand.email)}">${esc(brand.email)}</a></li>
-                        <li>${esc(brand.location)}</li>
+                        ${brand.phone ? `<li><span class="contact-label">Call</span> <a href="${esc(telHref(brand.phone))}">${esc(brand.phone)}</a></li>` : ''}
+                        ${brand.whatsappNumber ? `<li><span class="contact-label">WhatsApp</span> <a href="${esc(whatsappChatUrl())}" target="_blank" rel="noopener">${esc(brand.whatsappNumber)}</a></li>` : ''}
+                        ${brand.email ? `<li><span class="contact-label">Email</span> <a href="mailto:${esc(brand.email)}">${esc(brand.email)}</a></li>` : ''}
+                        ${brand.location ? `<li>${esc(brand.location)}</li>` : ''}
                     </ul>
                 </div>
             </div>
@@ -174,20 +194,17 @@
         `;
     }
 
-    function pills(serviceId, sample, sampleLabel) {
+    function pills(serviceId) {
         const name = serviceName(serviceId);
-        return `
-            <div class="pill-row">
-                ${name ? `<a class="service-pill" href="${serviceUrl(serviceId)}">${esc(name)}</a>` : ''}
-                ${sample ? `<span class="sample-pill">${sampleLabel}</span>` : ''}
-            </div>
-        `;
+        return name
+            ? `<div class="pill-row"><a class="service-pill" href="${serviceUrl(serviceId)}">${esc(name)}</a></div>`
+            : '';
     }
 
     function projectCard(item) {
         return `
             <article class="project-card" data-service="${esc(item.serviceId)}">
-                ${pills(item.serviceId, item.sample, 'Sample project')}
+                ${pills(item.serviceId)}
                 <h3><a href="${projectUrl(item.id)}">${esc(item.title)}</a></h3>
                 <p>${esc(item.summary)}</p>
                 ${list(item.tags).length ? `<div class="tag-row">${list(item.tags).map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}</div>` : ''}
@@ -199,7 +216,7 @@
     function insightCard(item) {
         return `
             <article class="insight-card">
-                ${pills(item.serviceId, item.sample, 'Sample article')}
+                ${pills(item.serviceId)}
                 <p class="meta">${formatDate(item.date)}${item.readTime ? ` · ${esc(item.readTime)}` : ''}</p>
                 <h3><a href="${insightUrl(item.id)}">${esc(item.title)}</a></h3>
                 <p>${esc(item.summary)}</p>
@@ -521,7 +538,7 @@
         const service = findService(item.serviceId);
 
         return `
-            ${pageHero({ eyebrow: 'Case study', title: item.title, intro: item.summary }, pills(item.serviceId, item.sample, 'Sample project'))}
+            ${pageHero({ eyebrow: 'Case study', title: item.title, intro: item.summary }, pills(item.serviceId))}
             <section class="detail-section">
                 <div class="container detail-grid">
                     <div class="detail-main">
@@ -572,7 +589,7 @@
         const meta = `<p class="meta article-meta">${formatDate(item.date)}${item.readTime ? ` · ${esc(item.readTime)}` : ''}</p>`;
 
         return `
-            ${pageHero({ eyebrow: 'Insight', title: item.title, intro: item.summary }, pills(item.serviceId, item.sample, 'Sample article') + meta)}
+            ${pageHero({ eyebrow: 'Insight', title: item.title, intro: item.summary }, pills(item.serviceId) + meta)}
             <section class="detail-section">
                 <div class="container detail-grid">
                     <article class="detail-main article-body">
@@ -627,11 +644,12 @@
                     <div class="contact-grid">
                         <div class="contact-info">
                             <h2 class="section-title">Get in touch</h2>
-                            <p>Fill out the form or reach us directly.</p>
+                            <p>Send a quote request on WhatsApp, or reach us directly.</p>
                             <div class="info-links">
-                                <p><i class="fa-solid fa-phone text-accent" aria-hidden="true"></i> <a href="${esc(telHref(brand.phone))}">${esc(brand.phone)}</a></p>
-                                <p><i class="fa-solid fa-envelope text-accent" aria-hidden="true"></i> <a href="mailto:${esc(brand.email)}">${esc(brand.email)}</a></p>
-                                <p><i class="fa-solid fa-location-dot text-accent" aria-hidden="true"></i> ${esc(brand.location)}</p>
+                                ${brand.phone ? `<p><i class="fa-solid fa-phone text-accent" aria-hidden="true"></i> <span class="contact-label">Call</span> <a href="${esc(telHref(brand.phone))}">${esc(brand.phone)}</a></p>` : ''}
+                                ${brand.whatsappNumber ? `<p><i class="fa-brands fa-whatsapp text-accent" aria-hidden="true"></i> <span class="contact-label">WhatsApp</span> <a href="${esc(whatsappChatUrl())}" target="_blank" rel="noopener">${esc(brand.whatsappNumber)}</a></p>` : ''}
+                                ${brand.email ? `<p><i class="fa-solid fa-envelope text-accent" aria-hidden="true"></i> <span class="contact-label">Email</span> <a href="mailto:${esc(brand.email)}">${esc(brand.email)}</a></p>` : ''}
+                                ${brand.location ? `<p><i class="fa-solid fa-location-dot text-accent" aria-hidden="true"></i> ${esc(brand.location)}</p>` : ''}
                             </div>
                             ${socials ? `<div class="social-icons">${socials}</div>` : ''}
                         </div>
@@ -650,8 +668,9 @@
                                 </select>
                                 <label for="message">Project Details</label>
                                 <textarea id="message" name="message" rows="5" required></textarea>
+                                <p class="form-note">Submitting opens WhatsApp with your details so you can send them to our team.</p>
                                 <p class="form-status" id="form-status" role="status" aria-live="polite" hidden></p>
-                                <button type="submit" class="btn btn-primary full-width">Request a Free Quote</button>
+                                <button type="submit" class="btn btn-primary full-width">Send on WhatsApp</button>
                             </form>
                         </div>
                     </div>
@@ -746,28 +765,68 @@
             event.preventDefault();
             const data = new FormData(form);
             const field = (name) => String(data.get(name) || '').trim();
+            const name = field('name');
+            const email = field('email');
+            const phone = field('phone');
+            const serviceId = field('service');
+            const message = field('message');
+            const serviceTitle = findService(serviceId)?.title || serviceId;
+            const chatMessage = [
+                `Hello ${brand.name}, I would like a quote.`,
+                `Name: ${name}`,
+                `Email: ${email}`,
+                phone ? `Phone: ${phone}` : '',
+                `Service: ${serviceTitle}`,
+                '',
+                message
+            ].filter(Boolean).join('\n');
 
             try {
-                addLead({
-                    name: field('name'),
-                    email: field('email'),
-                    phone: field('phone'),
-                    service: field('service'),
-                    message: field('message')
-                });
+                addLead({ name, email, phone, service: serviceId, message });
             } catch {
-                showStatus(`This browser blocked local storage, so the request could not be saved. Email ${brand.email} instead.`, 'error');
+                // Local draft save is optional; WhatsApp delivery is the primary path.
+            }
+
+            const chatUrl = whatsappChatUrl(chatMessage);
+            if (!chatUrl) {
+                const mail = brand.email
+                    ? `mailto:${brand.email}?subject=${encodeURIComponent(`Quote request: ${serviceTitle}`)}&body=${encodeURIComponent(chatMessage)}`
+                    : '';
+                if (mail) {
+                    window.location.href = mail;
+                    showStatus('WhatsApp is not configured, so your email app is opening instead.', 'success');
+                    form.reset();
+                    return;
+                }
+                showStatus('We could not open WhatsApp. Please call or email us using the details on this page.', 'error');
                 return;
             }
 
+            window.open(chatUrl, '_blank', 'noopener');
             form.reset();
-            showStatus('Your quote request is saved on this device. A manager can review it from this browser’s dashboard.', 'success');
+            showStatus('WhatsApp is opening with your request. Send the message there to reach our team.', 'success');
         });
+    }
+
+    function renderWhatsAppChat() {
+        const chatUrl = whatsappChatUrl(`Hello ${brand.name}, I would like to chat about a project.`);
+        if (!chatUrl) {
+            return;
+        }
+        const button = document.createElement('a');
+        button.className = 'whatsapp-float';
+        button.href = chatUrl;
+        button.target = '_blank';
+        button.rel = 'noopener';
+        button.setAttribute('aria-label', 'Chat with us on WhatsApp');
+        button.innerHTML = '<i class="fa-brands fa-whatsapp" aria-hidden="true"></i>';
+        document.body.appendChild(button);
     }
 
     renderHeader();
     renderFooter();
     document.getElementById('main').innerHTML = (RENDERERS[page] || renderHome)();
+    renderWhatsAppChat();
     bindMenu();
     bindFaq();
     bindWorkFilters();
