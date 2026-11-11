@@ -187,64 +187,84 @@ window.SITE_DEFAULTS = {
 
     projects: [
         {
-            id: 'retail-storefront',
-            title: 'eCommerce storefront for a fashion boutique',
-            serviceId: 'webdev',
-            summary: 'A mobile-first online shop that moved a Lagos boutique from Instagram DMs to organised orders and payments.',
-            challenge: 'The boutique took most orders through Instagram messages. Stock was tracked in notes, payments were hard to reconcile, and replies slowed down as the customer list grew.',
-            approach: 'We designed and built a responsive storefront with product categories, a cart, and online payment. Staff got a simple admin area to add products, update stock, and process orders without calling a developer.',
-            outcome: 'Customers can browse and pay at any hour. The team manages catalogue and orders from one place, and WhatsApp support now handles questions instead of taking every order by hand.',
-            tags: ['eCommerce', 'Responsive design', 'Payments']
-        },
-        {
-            id: 'payments-app-qa',
-            title: 'Pre-release QA for a payments app',
-            serviceId: 'testing',
-            summary: 'Functional, device, and regression testing before a major mobile payments update went live.',
-            challenge: 'A small product team was shipping a large release with no dedicated QA process. Sign-up, transfers, and bill payments needed to work across many Android and iOS devices.',
-            approach: 'We wrote test cases for the core money journeys, ran them on a device matrix, and logged defects with clear steps to reproduce. Blocking issues were prioritised with the engineering team before launch.',
-            outcome: 'Critical defects were fixed before release. The team kept our regression checklist and now reuses it for every update.',
-            tags: ['Mobile QA', 'Regression testing', 'Device coverage']
-        },
-        {
-            id: 'ngo-brand-identity',
-            title: 'Brand system for a community NGO',
-            serviceId: 'branding',
-            summary: 'A logo, colour system, and ready-to-use templates that gave a growing non-profit one clear identity.',
-            challenge: 'Volunteers designed posters, reports, and social posts in many different styles. Donors and partners struggled to recognise the organisation as the same brand.',
-            approach: 'We created a new logo, a short brand guide, and editable templates for social posts, reports, and presentations so non-designers could stay on brand.',
-            outcome: 'The organisation now presents one identity across channels. Volunteers produce materials faster without starting from a blank page each time.',
-            tags: ['Logo', 'Brand guide', 'Templates']
-        },
-        {
-            id: 'restaurant-social-relaunch',
-            title: 'Social media relaunch for a restaurant',
-            serviceId: 'marketing',
-            summary: 'A content calendar and local ad campaign that turned irregular posting into measurable bookings.',
-            challenge: 'The restaurant posted when staff had time and could not tell whether Instagram activity brought diners through the door.',
-            approach: 'We set a weekly content plan, ran geo-targeted ads for nearby diners, and added tracking so enquiries and bookings from social media could be measured.',
-            outcome: 'Posting is consistent, ad spend is tied to results, and the owner can see which campaigns lead to reservations.',
-            tags: ['Social media', 'Paid ads', 'Reporting']
-        },
-        {
-            id: 'clinic-booking-system',
-            title: 'Online booking for a private clinic',
+            id: 'healthcare-management-system',
+            title: 'Healthcare Management System',
             serviceId: 'automation',
-            summary: 'An appointment system that replaced phone-only booking with self-service scheduling and automatic reminders.',
-            challenge: 'Front-desk staff spent much of the day on the phone booking appointments and sending reminders by hand. Missed calls meant missed patients.',
-            approach: 'We set up online booking with automatic confirmations and reminders, linked to a simple patient contact list the clinic could manage itself.',
-            outcome: 'Patients book outside office hours, reminders go out automatically, and staff spend more time on care and less time on the phone.',
-            tags: ['Booking', 'Workflow automation', 'CRM']
+            summary: 'An integrated platform for patient records, appointments, diagnostics, payments and reports in one digital environment.',
+            challenge: 'Healthcare and diagnostic centres often manage patient records, appointment bookings, payments and diagnostic reports across disconnected processes. This creates administrative bottlenecks, makes information difficult to retrieve and affects the overall patient experience.',
+            approach: 'We designed and developed an integrated healthcare management platform that brings patient registration, appointment scheduling, diagnostic workflows, payments and report management into one digital environment. The platform also provides administrative controls and secure access for different categories of users.',
+            outcome: 'Healthcare providers get a centralised system for managing patient interactions and operational workflows. Patients benefit from a more organised booking and reporting experience, while administrators have better control over daily operations.',
+            tags: ['Healthcare', 'Workflows', 'Admin']
         },
         {
-            id: 'teacher-digital-skills',
-            title: 'Digital skills programme for teachers',
-            serviceId: 'training',
-            summary: 'Hands-on training that helped school staff use digital tools for lessons, records, and parent communication.',
-            challenge: 'A school wanted teachers confident with productivity tools, online classrooms, and safe AI use — without a course that stayed theoretical.',
-            approach: 'We ran practical workshops built around the school’s real tasks: lesson materials, attendance, and parent updates. Each session included exercises and templates staff could reuse.',
-            outcome: 'Teachers left with working skills, course notes, and templates they use in day-to-day work. The school now has a shared baseline for digital practice.',
-            tags: ['Training', 'AI tools', 'Education']
+            id: 'digital-education-management-platform',
+            title: 'Digital Education Management Platform',
+            serviceId: 'webdev',
+            summary: 'A platform that digitises admissions, programme management and student engagement for education institutions.',
+            challenge: 'Managing thousands of student applications, admissions, academic programmes and institutional records manually can overwhelm administrative teams. Disconnected processes also make it difficult for applicants and students to access important information.',
+            approach: 'We developed an integrated education management platform that digitises the admission process, programme management and student engagement. The solution includes online application workflows, applicant tracking, administrative dashboards and a digital campus portal.',
+            outcome: 'Institutions can manage admission activities more efficiently, process applications through a centralised platform and provide students with improved access to digital academic services.',
+            tags: ['Education', 'Admissions', 'Portal']
+        },
+        {
+            id: 'hospitality-procurement-marketplace',
+            title: 'Hospitality Procurement Marketplace',
+            serviceId: 'webdev',
+            summary: 'A specialised marketplace connecting hospitality businesses with suppliers for equipment and operational supplies.',
+            challenge: 'Hospitality businesses depend on multiple suppliers for equipment, consumables and operational supplies. Finding reliable vendors, comparing products and coordinating procurement through traditional channels can be time-consuming and inefficient.',
+            approach: 'We developed a specialised online marketplace that connects hospitality businesses with suppliers. The platform supports vendor onboarding, product catalogues, product discovery, ordering workflows and digital commerce management.',
+            outcome: 'Hospitality buyers have a more organised way to discover and source supplies, while vendors gain a digital channel to showcase products and manage their commercial activities.',
+            tags: ['Marketplace', 'Vendors', 'Commerce']
+        },
+        {
+            id: 'business-productivity-platform',
+            title: 'Business Productivity Platform',
+            serviceId: 'automation',
+            summary: 'One application for invoices, quotations, receipts, sales records and a professional online presence for small businesses.',
+            challenge: 'Many small businesses still rely on manual processes to prepare invoices, quotations, receipts and business proposals. Maintaining business records and establishing a professional online presence can also be expensive or technically challenging.',
+            approach: 'We designed a business productivity platform that brings essential business documentation and record-keeping tools into one accessible application. Businesses can generate professional documents, record sales, create service portfolios and establish a customised online presence.',
+            outcome: 'Small businesses can handle routine administrative tasks more easily, maintain better business records and present their services professionally without investing in multiple software tools.',
+            tags: ['Documents', 'SMEs', 'Records']
+        },
+        {
+            id: 'multi-vendor-ecommerce-platform',
+            title: 'Multi-vendor E-commerce Platform',
+            serviceId: 'webdev',
+            summary: 'Marketplace infrastructure for multiple vendors, catalogues, inventory, orders and transactions in one shared platform.',
+            challenge: 'Businesses looking to operate online marketplaces need more than a conventional online store. They require infrastructure for managing multiple vendors, product catalogues, inventory, customer orders and transactions within one platform.',
+            approach: 'We developed a multi-vendor commerce solution with dedicated vendor management capabilities, product catalogues, customer-facing storefronts, shopping workflows and administrative controls. The architecture supports multiple sellers operating within a shared digital marketplace.',
+            outcome: 'Marketplace operators can manage vendors and commercial activities centrally, while vendors gain the tools to manage their products and orders through a shared digital platform.',
+            tags: ['Multi-vendor', 'Catalogue', 'Orders']
+        },
+        {
+            id: 'digital-event-management-platform',
+            title: 'Digital Event Management Platform',
+            serviceId: 'webdev',
+            summary: 'A concept platform for event creation, registration, attendee management and communications in one place.',
+            challenge: 'Event organisers often coordinate registrations, participant information, communications and event activities across different tools. This can make managing attendees and maintaining effective communication unnecessarily complicated.',
+            approach: 'We developed the concept for a digital event management platform designed to simplify event creation, participant registration, attendee management and event communications through an integrated experience.',
+            outcome: 'The proposed solution provides a foundation for more organised event administration, streamlined registration and improved participant engagement.',
+            tags: ['Events', 'Registration', 'Engagement']
+        },
+        {
+            id: 'hotel-booking-website',
+            title: 'Hotel Booking Website',
+            serviceId: 'webdev',
+            summary: 'A guest-facing hotel website with room discovery, availability and online booking in one place.',
+            challenge: 'Hotels that rely on phone calls, walk-ins and third-party listing sites often struggle to present rooms clearly, capture direct bookings and give guests a smooth way to check availability and rates.',
+            approach: 'We designed and built a hotel booking website with room catalogues, availability views, booking workflows and clear calls to action for enquiries and reservations. The experience is mobile-friendly so guests can browse and book from any device.',
+            outcome: 'Hotels gain a professional direct-booking channel that showcases rooms and amenities, reduces friction for guests and gives the team a clearer flow for managing reservation requests.',
+            tags: ['Hospitality', 'Booking', 'Responsive design']
+        },
+        {
+            id: 'company-websites',
+            title: 'Company Websites',
+            serviceId: 'webdev',
+            summary: 'Professional corporate websites that present services, build trust and turn visitors into enquiries.',
+            challenge: 'Many organisations still rely on outdated sites, social profiles alone or incomplete online information. Without a clear website, it is harder to look established, explain services and convert interested visitors into leads.',
+            approach: 'We design and develop company websites tailored to each brand — structure, messaging, service pages and contact paths included. Sites are responsive, easy to update and built around the actions the business wants visitors to take.',
+            outcome: 'Businesses present a consistent digital presence, communicate what they offer with clarity and give prospects a straightforward way to get in touch or request a quote.',
+            tags: ['Corporate', 'Lead generation', 'Responsive design']
         }
     ],
 
