@@ -232,6 +232,85 @@ main:focus {
 }
 
 /* Hero UI Section Layout */
+.hero-section,
+.page-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    background-image:
+        radial-gradient(ellipse 90% 70% at 50% 115%, rgba(18, 24, 38, 0.95), transparent 55%),
+        radial-gradient(circle at 12% 88%, rgba(40, 58, 92, 0.18), transparent 42%);
+}
+
+.hero-section::before,
+.page-hero::before,
+.hero-section::after,
+.page-hero::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-section::before,
+.page-hero::before {
+    width: 62vmax;
+    height: 62vmax;
+    top: -14%;
+    right: -8%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(204, 255, 0, 0.28) 0%, rgba(204, 255, 0, 0.09) 36%, transparent 68%);
+    animation: hero-orb-drift 18s ease-in-out infinite alternate;
+}
+
+.hero-section::after,
+.page-hero::after {
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 18% 78%, rgba(70, 100, 150, 0.18), transparent 46%),
+        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: auto, 52px 52px, 52px 52px;
+    background-position: 0 0, 0 0, 0 0;
+    mask-image: radial-gradient(ellipse 80% 75% at 50% 38%, #000 18%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 38%, #000 18%, transparent 80%);
+    opacity: 0.9;
+    animation: hero-grid-drift 24s ease-in-out infinite alternate;
+}
+
+.page-hero::before {
+    width: 46vmax;
+    height: 46vmax;
+    opacity: 0.7;
+    animation-duration: 22s;
+}
+
+.page-hero::after {
+    opacity: 0.55;
+    animation-duration: 28s;
+}
+
+@keyframes hero-orb-drift {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-8%, 6%, 0) scale(1.08); }
+    100% { transform: translate3d(-14%, 2%, 0) scale(1.03); }
+}
+
+@keyframes hero-grid-drift {
+    0% { background-position: 0 0, 0 0, 0 0; opacity: 0.7; }
+    100% { background-position: 0 0, 26px 18px, 26px 18px; opacity: 0.95; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-section::before,
+    .page-hero::before,
+    .hero-section::after,
+    .page-hero::after {
+        animation: none;
+    }
+}
+
 .hero-section {
     min-height: 100vh;
     display: flex;
@@ -239,10 +318,11 @@ main:focus {
     justify-content: center;
     text-align: center;
     padding-top: 100px;
-    background: radial-gradient(circle at top right, rgba(204,255,0,0.07), transparent 50%);
 }
 
 .hero-container {
+    position: relative;
+    z-index: 1;
     max-width: 850px;
     width: 90%;
 }
@@ -764,11 +844,12 @@ footer {
 /* Interior pages */
 .page-hero {
     padding: 160px 0 40px;
-    background: radial-gradient(circle at top right, rgba(204,255,0,0.07), transparent 55%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .page-hero .container {
+    position: relative;
+    z-index: 1;
     padding: 0 0 40px;
 }
 
@@ -1117,6 +1198,13 @@ footer {
     .section-title { font-size: 2rem; }
     .page-hero { padding-top: 130px; }
     .page-hero h1 { font-size: 2rem; }
+    .hero-section::before,
+    .page-hero::before {
+        width: 90vw;
+        height: 90vw;
+        top: -8%;
+        right: -22%;
+    }
     .whatsapp-float {
         right: 16px;
         bottom: 16px;
